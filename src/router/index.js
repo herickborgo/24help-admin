@@ -1,22 +1,28 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import HomeView from '../views/HomeView.vue';
+import AuthRoutes from '@/router/auth';
+// import ServiceOrdersRoutes from '@/router/service-orders';
+import Auth from '@/services/auth.service';
+import Storage from '@/services/storage.service';
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: HomeView,
-  },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue'),
+    component: () => import('@/components/layout/layout-router-view.vue'),
+    children: [
+      {
+        path: 'auth',
+        component: () => import('@/components/layout/layout-router-view.vue'),
+        children: AuthRoutes,
+      },
+      // {
+      //   path: 'service-orders',
+      //   component: () => import('@/components/layout/default-layout.vue'),
+      //   children: ServiceOrdersRoutes,
+      // },
+    ],
   },
 ];
 
@@ -24,6 +30,21 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
+});
+
+router.beforeEach((to, _, next) => {
+  if (to.name !== 'Login' && !Auth.isAuthenticated() && to.meta.requireAuthentication) {
+    Auth.logout();
+    return next({ name: 'Login' });
+  }
+
+  if (to.name === 'Login' && Auth.isAuthenticated()) {
+    const rollbackRoute = Storage.get('rollback-route');
+    return next(rollbackRoute);
+  }
+
+  Storage.set('rollback-route', to.fullPath);
+  return next();
 });
 
 export default router;
