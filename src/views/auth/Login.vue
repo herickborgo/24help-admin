@@ -81,7 +81,7 @@ export default {
       event.preventDefault();
 
       if (Auth.login(this.payload)) {
-        // this.$router.replace({ name: 'ServiceOrdersList' });
+        this.$router.replace({ name: 'ServiceOrdersList' });
       }
     },
     recoveryPassword() {

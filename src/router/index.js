@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import AuthRoutes from '@/router/auth';
-// import ServiceOrdersRoutes from '@/router/service-orders';
+import ServiceOrdersRoutes from '@/router/service-orders';
 import Auth from '@/services/auth.service';
 import Storage from '@/services/storage.service';
 
@@ -13,16 +13,36 @@ const routes = [
     component: () => import('@/components/layout/layout-router-view.vue'),
     children: [
       {
-        path: 'auth',
-        component: () => import('@/components/layout/layout-router-view.vue'),
-        children: AuthRoutes,
+        path: 'home',
+        name: 'Home',
+        component: () => import('@/views/Home.vue'),
+        meta: {
+          withLayout: true,
+          requireAuthentication: true,
+          title: 'Inicio',
+          sidebar: {
+            label: 'Inicio',
+            icon: 'house',
+          },
+        },
       },
-      // {
-      //   path: 'service-orders',
-      //   component: () => import('@/components/layout/default-layout.vue'),
-      //   children: ServiceOrdersRoutes,
-      // },
+      {
+        path: 'service-orders',
+        component: () => import('@/components/layout/layout-router-view.vue'),
+        children: ServiceOrdersRoutes,
+        meta: {
+          sidebar: {
+            label: 'Chamados',
+            icon: 'tools',
+          },
+        },
+      },
     ],
+  },
+  {
+    path: '/auth',
+    component: () => import('@/components/layout/layout-router-view.vue'),
+    children: AuthRoutes,
   },
 ];
 

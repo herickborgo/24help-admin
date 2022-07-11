@@ -1,0 +1,8 @@
+// TODO criar componentes de input, input de email, input de senha, etc., para que tenha suas respectivas validações
+// TODO criar tela para onde vai ser redirecionado após receber o link de recuperação de senha
+// TODO criar componentes de tabela para facilitar o uso e aproveitar alguns comportamentos
+// TODO criar componente de layout com topbar e sidebar
+// TODO melhorar estrutura de pastas
+// TODO avaliar possibilidade de utilizar outro framework css
+// TODO criar mixin com algumas funçoes uteis como goToBack, etc.
+// TODO verificar nomenclaturas, plural, singular, etc.

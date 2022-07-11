@@ -1,8 +1,45 @@
 <template>
   <div id="app">
-    <router-view/>
+    <div v-if="withLayout">
+      <top-bar/>
+      <left-bar/>
+      <b-container fluid>
+        <b-row align-h="center" align style="height: 100%">
+          <b-col cols="10" sm="10" md="10" class="p-5">
+            <b-card>
+              <template #header>
+                <h3>{{ title }}</h3>
+              </template>
+              <router-view/>
+            </b-card>
+          </b-col>
+        </b-row>
+      </b-container>
+    </div>
+    <div v-else>
+      <router-view/>
+    </div>
   </div>
 </template>
+
+<script>
+import LeftBar from '@/components/layout/left-bar.vue';
+import TopBar from '@/components/layout/top-bar.vue';
+
+export default {
+  name: 'App',
+
+  components: {
+    LeftBar,
+    TopBar,
+  },
+
+  computed: {
+    title: (vm) => vm.$route.meta?.title,
+    withLayout: (vm) => vm.$route.meta?.withLayout,
+  },
+};
+</script>
 
 <style>
 #app {
